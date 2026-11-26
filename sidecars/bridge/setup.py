@@ -44,6 +44,7 @@ from config_paths import (
 CONFIG_FILE = Path.home() / ".gemini" / "config" / "config.json"
 REQUIREMENTS_FILE = SIDECAR_DIR / "requirements.txt"
 REQUIRED_PY_MODULES = ("requests", "cryptography", "qrcode", "PIL")
+_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0
 
 
 def _platform_label() -> str:
@@ -128,6 +129,7 @@ def find_weflow_entry() -> Path | None:
                 errors="replace",
                 timeout=10,
                 shell=(os.name == "nt"),
+                creationflags=_NO_WINDOW,
             )
             groot = (proc.stdout or "").strip()
             if proc.returncode == 0 and groot:
@@ -185,6 +187,7 @@ def check_python_deps(py_exe: Path) -> tuple[dict[str, bool], bool]:
             encoding="utf-8",
             errors="replace",
             timeout=10,
+            creationflags=_NO_WINDOW,
         )
         if proc.returncode == 0:
             parsed = json.loads(proc.stdout.strip())
@@ -206,6 +209,7 @@ def check_weflow_db_configured() -> bool:
             encoding="utf-8",
             errors="replace",
             timeout=15,
+            creationflags=_NO_WINDOW,
         )
         out = proc.stdout or ""
         return "已设置" in out and ("NT 数据库" in out or "3.x 数据库" in out)

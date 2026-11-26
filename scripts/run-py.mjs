@@ -131,6 +131,16 @@ export function resolvePython() {
   return process.platform === 'win32' ? 'python' : 'python3';
 }
 
+function resolveHeadlessWindowsPython(pyExe) {
+  if (process.platform !== 'win32') return pyExe;
+  const lower = pyExe.toLowerCase();
+  if (lower.endsWith('python.exe')) {
+    const pyw = pyExe.slice(0, -'python.exe'.length) + 'pythonw.exe';
+    if (fs.existsSync(pyw)) return pyw;
+  }
+  return pyExe;
+}
+
 function main() {
   const pyArgs = process.argv.slice(2);
   if (!pyArgs.length) {
@@ -138,16 +148,24 @@ function main() {
     process.exit(2);
   }
 
-  const pyExe = resolvePython();
+  const isInteractive = Boolean(process.stdin.isTTY || process.stdout.isTTY);
+  const resolvedPy = resolvePython();
+  const pyExe = isInteractive ? resolvedPy : resolveHeadlessWindowsPython(resolvedPy);
   const dataDir = resolveDataDir();
   const child = spawn(pyExe, pyArgs, {
-    stdio: 'inherit',
+    stdio: isInteractive ? 'inherit' : ['ignore', 'pipe', 'pipe'],
+    windowsHide: !isInteractive,
     env: buildExtendedEnv({
       WECHAT_ASSISTANT_DATA_DIR: dataDir,
       PLUGIN_ROOT,
       PLUGIN_DATA: dataDir,
     }),
   });
+
+  if (!isInteractive) {
+    if (child.stdout) child.stdout.pipe(process.stdout);
+    if (child.stderr) child.stderr.pipe(process.stderr);
+  }
 
   child.on('error', (err) => {
     process.stderr.write(`[wechat-assistant] Failed to launch Python (${pyExe}): ${err.message}\n`);

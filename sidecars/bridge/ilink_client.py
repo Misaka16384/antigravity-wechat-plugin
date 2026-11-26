@@ -127,6 +127,9 @@ def detect_image_ext(data: bytes) -> str:
     return ".jpg"
 
 
+_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0
+
+
 def _find_bin(name: str) -> str | None:
     found = shutil.which(name)
     if found:
@@ -190,6 +193,7 @@ def decode_voice_bytes(data: bytes, sample_rate: int = 24000) -> tuple[bytes, st
                     encoding="utf-8",
                     errors="replace",
                     timeout=30,
+                    creationflags=_NO_WINDOW,
                     env={
                         **os.environ,
                         "WECHAT_ASSISTANT_DATA_DIR": str(DATA_DIR),
@@ -236,6 +240,7 @@ def decode_voice_bytes(data: bytes, sample_rate: int = 24000) -> tuple[bytes, st
                 capture_output=True,
                 text=True,
                 timeout=30,
+                creationflags=_NO_WINDOW,
             )
             if proc.returncode == 0 and os.path.exists(out_path):
                 wav_bytes = Path(out_path).read_bytes()

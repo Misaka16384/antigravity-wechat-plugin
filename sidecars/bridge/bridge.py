@@ -237,6 +237,9 @@ def resolve_agentapi_cmd() -> list[str]:
     return [str(default_bin)]
 
 
+_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0
+
+
 def run_agentapi(args: list[str], timeout: float = 30.0) -> tuple[int, str, str]:
     cmd = resolve_agentapi_cmd() + args
     proc = subprocess.run(
@@ -246,6 +249,7 @@ def run_agentapi(args: list[str], timeout: float = 30.0) -> tuple[int, str, str]
         encoding="utf-8",
         errors="replace",
         timeout=timeout,
+        creationflags=_NO_WINDOW,
     )
     return proc.returncode, proc.stdout.strip(), proc.stderr.strip()
 

@@ -1,7 +1,7 @@
 {
   "name": "wechat-assistant",
   "displayName": "WeChat Assistant",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Bridge WeChat ClawBot (iLink) to Antigravity with native multimodal voice decoding, proactive file/image replies, task watching, and integrated WeFlow local WeChat search.",
   "logo": "assets/logo.svg",
   "author": {

@@ -195,6 +195,9 @@ def switch_sidecar_project_in_config(target_proj: dict[str, Any]) -> None:
 # ── Screenshot & System Status ────────────────────────────────────────────────
 
 
+_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0
+
+
 def is_windows_locked() -> bool:
     if os.name != "nt":
         return False
@@ -206,6 +209,7 @@ def is_windows_locked() -> bool:
             encoding="utf-8",
             errors="replace",
             timeout=5,
+            creationflags=_NO_WINDOW,
         )
         return "LogonUI.exe" in (proc.stdout or "")
     except Exception:
@@ -276,6 +280,7 @@ def collect_system_status() -> str:
                 encoding="utf-8",
                 errors="replace",
                 timeout=10,
+                creationflags=_NO_WINDOW,
             )
             kv: dict[str, str] = {}
             for ln in (proc.stdout or "").splitlines():

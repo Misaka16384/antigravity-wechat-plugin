@@ -1,0 +1,11 @@
+{
+  "wechat-assistant-reply": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "node ./scripts/run-stop-hook.mjs",
+        "timeout": 30
+      }
+    ]
+  }
+}

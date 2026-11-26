@@ -1,0 +1,11 @@
+{
+  "display_name": "WeChat Assistant (ClawBot iLink)",
+  "description": "Bridges WeChat ClawBot (official iLink Bot API) to Antigravity App with native multimodal voice decoding (SILK v3 -> WAV), attachment inbox sync, task watching, and reply delivery.",
+  "command": "node",
+  "args": ["../../scripts/run-py.mjs", "-u", "bridge.py"],
+  "restart_policy": "always",
+  "env": {
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8"
+  }
+}

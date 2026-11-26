@@ -1,0 +1,18 @@
+{
+  "name": "wechat-assistant",
+  "displayName": "WeChat Assistant",
+  "version": "1.0.0",
+  "description": "Bridge WeChat ClawBot (iLink) to Antigravity with native multimodal voice decoding, proactive file/image replies, task watching, and integrated WeFlow local WeChat search.",
+  "logo": "assets/logo.svg",
+  "author": {
+    "name": "Misaka16384",
+    "url": "https://github.com/Misaka16384"
+  },
+  "homepage": "https://github.com/Misaka16384/antigravity-wechat-plugin",
+  "repository": "https://github.com/Misaka16384/antigravity-wechat-plugin",
+  "suggestedPrompts": [
+    "Run /wechat-setup to configure WeChat Assistant, native voice decoding, and WeFlow",
+    "Check my WeChat Assistant setup status and recent WeChat sessions",
+    "Summarize today's messages in a WeChat group and send the summary back to my WeChat"
+  ]
+}

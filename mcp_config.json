@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "wx": {
+      "command": "node",
+      "args": [
+        "${PLUGIN_ROOT}/scripts/wechat-mcp-server.mjs"
+      ]
+    }
+  }
+}
